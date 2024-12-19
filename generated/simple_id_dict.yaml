@@ -1,0 +1,35 @@
+%YAML 1.2
+---
+Simple ID Dictionary:
+  - Type:
+      - Entity: ~
+      - Type: Jfmby78N4BCseZinBmdVov
+      - Attribute: GscJ2GELQjmLoaVrYyR3xm
+      - Relation Type: 3WxYoAVreE4qFhkDUs5J3q
+      - Relation: QtC4Ay8HNLwSd1kSARgcDE
+      - Image: Q1LaZhnzj8AtCzx8T1HRMf
+      - Block: ~
+      - Space: 7gzF671tq5JTZ13naG4tnr
+      - Version: ~
+
+  - Attribute:
+      - Name: LuBWqZAu6pz54eiJS5mLv8
+      - Description: LA1DqP5v6QAdsgLPXGF3YA
+      - Value Type: WQfdWjboZWFuTseDhG5Cw1
+      - One Max: K1M9AEyda5oNB2WS38bDDW
+      - From entity: RERshk4JoYoMC17r1qAo9J
+      - To entity: Qx8dASiTNsxxP3rJbd4Lzd
+      - Index: WNopXUYxsSsE51gkJGWghe
+      - Width: ~
+      - Height: ~
+
+  - Relation Type:
+      - Types: Jfmby78N4BCseZinBmdVov
+      - Cover: 7YHk6qYkNDaAtNb8GwmysF
+      - Blocks: QYbjCM6NT9xmh2hFGsqpQX
+      - Attributes: 9zBADaYzyfzyFJn4GU1cC
+      - Relation Types: TarUQath6Kyh3jfnRv3hy7
+      - Relation value types: SeDR2b1bdnb6tj2qmdcFdg
+      - Broader Spaces: ~
+      - Subspaces: ~
+...

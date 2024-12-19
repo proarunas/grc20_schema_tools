@@ -1,12 +1,12 @@
-from ruamel.yaml import CommentedMap
+from ruamel.yaml import CommentedMap, CommentedSeq
 
 from yaml_helpers.attributes_helper import PropID, TypeID
 from yaml_helpers.yaml_format_helpers import add_top_level_spaces
 from yaml_helpers.yaml_io import parse_relation
 
 
-def generate_id_dict(data: dict) -> dict:
-    id_dict = CommentedMap()
+def generate_id_dict(data: dict) -> CommentedMap:
+    result = CommentedSeq()
 
     # get the type names from the schema
     types = data.get(TypeID.TYPE)
@@ -15,9 +15,12 @@ def generate_id_dict(data: dict) -> dict:
     rel_name = types.get(TypeID.REL).get(PropID.NAME)
 
     # set up the id dictionaries
-    id_dict.setdefault(type_name, {})
-    attr_dict = id_dict.setdefault(attr_name, {})
-    rel_dict = id_dict.setdefault(rel_name, {})
+    id_list = CommentedSeq()
+    result.append({type_name: id_list})
+    attr_list = CommentedSeq()
+    result.append({attr_name: attr_list})
+    rel_list = CommentedSeq()
+    result.append({rel_name: rel_list})
 
     # iterate over all types
     for e_type, entities in data.items():
@@ -25,7 +28,16 @@ def generate_id_dict(data: dict) -> dict:
             continue
 
         t_name = types.get(e_type).get(PropID.NAME)
-        sub_d = id_dict.setdefault(t_name, {})
+
+        sub_l = None
+        for item in result:
+            if t_name in item:
+                sub_l = item[t_name]
+                break
+
+        if sub_l is None:
+            sub_l = CommentedSeq()
+            result.append({t_name: sub_l})
 
         for key, entity in entities.items():
             # skip ignored entities
@@ -33,22 +45,19 @@ def generate_id_dict(data: dict) -> dict:
                 continue
 
             # store the entity id
-            sub_d[entity.get(PropID.NAME)] = entity.get(PropID.ID)
+            sub_l.append({entity.get(PropID.NAME): entity.get(PropID.ID)})
 
             # handle attributes
             for item in entity.get(PropID.ATTR) or []:
                 key, rel = parse_relation(item, data)
-                attr_dict[rel.get(PropID.NAME)] = rel.get(PropID.ID)
+                attr_list.append({rel.get(PropID.NAME): rel.get(PropID.ID)})
 
             # handle relations
             for item in entity.get(PropID.REL) or []:
                 key, rel = parse_relation(item, data)
-                rel_dict[rel.get(PropID.NAME)] = rel.get(PropID.ID)
+                rel_list.append({rel.get(PropID.NAME): rel.get(PropID.ID)})
 
-        # just in case all entities are ignored
-        if not sub_d:
-            del id_dict[e_type]
 
-    add_top_level_spaces(id_dict)
+    add_top_level_spaces(result)
 
-    return id_dict
+    return CommentedMap({"Simple ID Dictionary": result})
