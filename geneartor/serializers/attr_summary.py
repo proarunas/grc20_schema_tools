@@ -1,17 +1,11 @@
-from collections import namedtuple
-
 from ruamel.yaml import CommentedSeq, CommentedMap
 
 from yaml_helpers.attributes_helper import PropID, TypeID
 from yaml_helpers.yaml_format_helpers import add_top_level_spaces
 from yaml_helpers.yaml_io import parse_relation
 
-config = namedtuple("Config", ["key_by_id", "include_id", "include_name", "include_desc"])
-
 
 def generate_basic_attribute_summary(data: dict, v_type: dict) -> dict:
-    print(v_type)
-
     if not data:
         raise ValueError("No data to serialize")
 
@@ -39,7 +33,7 @@ def generate_basic_attribute_summary(data: dict, v_type: dict) -> dict:
     results = CommentedSeq()
     for key, val in attributes.items():
         name = val.get(PropID.NAME)
-        types = ["Attribute"]
+        types = [data.get(TypeID.TYPE).get(TypeID.ATTR).get(PropID.NAME)]
         if PropID.TYPES in val:
             types += val.get(PropID.TYPES)
         vt = v_type.get(val.get(PropID.V_TYPE)).get(PropID.NAME)

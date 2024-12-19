@@ -8,6 +8,7 @@ class PropID:
     TYPES = "types"
     DESC = "desc"
     V_TYPE = "v_type"
+    R_LIMIT = "rel_limit"
 
 
 class TypeID:

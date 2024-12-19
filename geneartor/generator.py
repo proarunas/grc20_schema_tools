@@ -5,6 +5,7 @@ from loguru import logger
 
 from serializers.attr_summary import generate_basic_attribute_summary
 from serializers.id_dictioanry import generate_id_dict
+from serializers.rel_summary import generate_basic_relation_summary
 from serializers.type_summary import generate_basic_summary
 from validators.schema_validator import validate
 from validators.validation_helpers.val_error import ValErr, ErrType
@@ -18,6 +19,7 @@ value_types_path = os.path.join(schema_dir, "value_types.yaml")
 output_dir = "../generated/"
 summary_file_path = os.path.join(output_dir, "simple_type_summary.yaml")
 attribute_summary_path = os.path.join(output_dir, "simple_attribute_summary.yaml")
+rel_summary_path = os.path.join(output_dir, "relation_summary.yaml")
 id_dict_file_path = os.path.join(output_dir, "simple_id_dict.yaml")
 
 debug = False
@@ -47,21 +49,26 @@ def load_schema() -> (dict, dict):
     return schema, v_types.get("v_type")
 
 
-def generate_basics(schema: dict, v_types:dict):
-    logger.info("Generating Basic Summary")
-    summary = generate_basic_summary(schema)
-    to_yaml_file(summary, summary_file_path)
-    logger.success("Basic Summary Generated at: {}", summary_file_path)
-
+def generate_basics(schema: dict, v_types: dict):
     logger.info("Generating ID Dictionary")
     id_dict = generate_id_dict(schema)
     to_yaml_file(id_dict, id_dict_file_path)
     logger.success("ID Dictionary Generated at: {}", id_dict_file_path)
 
-    logger.info("Generating Basic Summary")
+    logger.info("Generating Type Summary")
+    summary = generate_basic_summary(schema)
+    to_yaml_file(summary, summary_file_path)
+    logger.success("Type Summary Generated at: {}", summary_file_path)
+
+    logger.info("Generating Attribute Summary")
     a_summary = generate_basic_attribute_summary(schema, v_types)
     to_yaml_file(a_summary, attribute_summary_path)
     logger.success("Attribute Summary Generated at: {}", attribute_summary_path)
+
+    logger.info("Generating Relation Summary")
+    rel_summary = generate_basic_relation_summary(schema)
+    to_yaml_file(rel_summary, rel_summary_path)
+    logger.success("Relation Summary Generated at: {}", rel_summary_path)
 
 
 def main():

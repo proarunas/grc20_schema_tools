@@ -1,0 +1,76 @@
+%YAML 1.2
+---
+Relation Types:
+
+  - Types:
+      _ID: Jfmby78N4BCseZinBmdVov
+      Types: [Relation Type]
+      Name: Types
+
+      Relation value types: [Type]
+      _Usage: [Entity]
+
+  - Cover:
+      _ID: 7YHk6qYkNDaAtNb8GwmysF
+      Types: [Relation Type]
+      Name: Cover
+
+      Relation value types: [Image]
+      _Usage: [Entity]
+
+  - Blocks:
+      _ID: QYbjCM6NT9xmh2hFGsqpQX
+      Types: [Relation Type]
+      Name: Blocks
+
+      Relation value types: [Block]
+      _Usage: [Entity]
+
+  - Attributes:
+      _ID: 9zBADaYzyfzyFJn4GU1cC
+      Types: [Relation Type]
+      Name: Attributes
+
+      Relation value types: [Attribute]
+      _Usage: [Type]
+
+  - Relation Types:
+      _ID: TarUQath6Kyh3jfnRv3hy7
+      Types: [Relation Type]
+      Name: Relation Types
+
+      Relation value types: [Relation Type]
+      _Usage: [Type]
+
+  - Relation value types:
+      _ID: SeDR2b1bdnb6tj2qmdcFdg
+      Types: [Relation Type]
+      Name: Relation value types
+
+      Relation value types: [Type]
+      _Usage: [Relation Type]
+
+  - Broader Spaces:
+      _ID: ~
+      Types: [Relation Type]
+      Name: Broader Spaces
+
+      Relation value types: [Space]
+      _Usage: [Space]
+
+  - Subspaces:
+      _ID: ~
+      Types: [Relation Type]
+      Name: Subspaces
+
+      Relation value types: [Space]
+      _Usage: [Space]
+
+  - Versions:
+      _ID: ~
+      Types: [Relation Type]
+      Name: Versions
+
+      Relation value types: [Space]
+      _Usage: []
+...
