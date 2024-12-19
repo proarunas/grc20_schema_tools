@@ -3,6 +3,7 @@ import sys
 
 from loguru import logger
 
+from serializers.attr_summary import generate_basic_attribute_summary
 from serializers.id_dictioanry import generate_id_dict
 from serializers.type_summary import generate_basic_summary
 from validators.schema_validator import validate
@@ -16,6 +17,7 @@ value_types_path = os.path.join(schema_dir, "value_types.yaml")
 
 output_dir = "../generated/"
 summary_file_path = os.path.join(output_dir, "simple_type_summary.yaml")
+attribute_summary_path = os.path.join(output_dir, "simple_attribute_summary.yaml")
 id_dict_file_path = os.path.join(output_dir, "simple_id_dict.yaml")
 
 debug = False
@@ -42,10 +44,10 @@ def load_schema() -> (dict, dict):
     v_types = load_data(value_types_path)
     print_errors(validate_value_schema(v_types))
 
-    return schema, v_types
+    return schema, v_types.get("v_type")
 
 
-def generate_basics(schema: dict):
+def generate_basics(schema: dict, v_types:dict):
     logger.info("Generating Basic Summary")
     summary = generate_basic_summary(schema)
     to_yaml_file(summary, summary_file_path)
@@ -56,10 +58,15 @@ def generate_basics(schema: dict):
     to_yaml_file(id_dict, id_dict_file_path)
     logger.success("ID Dictionary Generated at: {}", id_dict_file_path)
 
+    logger.info("Generating Basic Summary")
+    a_summary = generate_basic_attribute_summary(schema, v_types)
+    to_yaml_file(a_summary, attribute_summary_path)
+    logger.success("Attribute Summary Generated at: {}", attribute_summary_path)
+
 
 def main():
     schema, v_types = load_schema()
-    generate_basics(schema)
+    generate_basics(schema, v_types)
     logger.success("All tasks completed.")
 
 

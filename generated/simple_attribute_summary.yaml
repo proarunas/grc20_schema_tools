@@ -1,0 +1,100 @@
+%YAML 1.2
+---
+Attributes:
+
+  - Name:
+      _ID: LuBWqZAu6pz54eiJS5mLv8
+      Types: [Attribute]
+      Name: Name
+
+      Value Type: Text
+      _Usage: [Entity]
+
+  - Description:
+      _ID: LA1DqP5v6QAdsgLPXGF3YA
+      Types: [Attribute]
+      Name: Description
+
+      Value Type: Text
+      _Usage: [Entity]
+
+  - Value Type:
+      _ID: WQfdWjboZWFuTseDhG5Cw1
+      Types: [Attribute]
+      Name: Value Type
+
+      Value Type: Text
+      _Usage: [Attribute]
+
+  - One Max:
+      _ID: K1M9AEyda5oNB2WS38bDDW
+      Types: [Attribute]
+      Name: One Max
+
+      Value Type: Text
+      _Usage: [Relation Type]
+
+  - From entity:
+      _ID: RERshk4JoYoMC17r1qAo9J
+      Types: [Attribute]
+      Name: From entity
+
+      Value Type: Text
+      _Usage: [Relation]
+
+  - To entity:
+      _ID: Qx8dASiTNsxxP3rJbd4Lzd
+      Types: [Attribute]
+      Name: To entity
+
+      Value Type: Text
+      _Usage: [Relation]
+
+  - Index:
+      _ID: WNopXUYxsSsE51gkJGWghe
+      Types: [Attribute]
+      Name: Index
+
+      Value Type: Text
+      _Usage: [Relation]
+
+  - Width:
+      _ID: ~
+      Types: [Attribute]
+      Name: Width
+
+      Value Type: Time
+      _Usage: [Image]
+
+  - Height:
+      _ID: ~
+      Types: [Attribute]
+      Name: Height
+
+      Value Type: Time
+      _Usage: [Image]
+
+  - Created At:
+      _ID: ~
+      Types: [Attribute]
+      Name: Created At
+
+      Value Type: Time
+      _Usage: []
+
+  - Updated At:
+      _ID: ~
+      Types: [Attribute]
+      Name: Updated At
+
+      Value Type: Time
+      _Usage: []
+
+  - Created By:
+      _ID: ~
+      Types: [Attribute]
+      Name: Created By
+
+      Value Type: Time
+      _Usage: []
+...

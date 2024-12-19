@@ -7,6 +7,7 @@ class PropID:
     NAME = "name"
     TYPES = "types"
     DESC = "desc"
+    V_TYPE = "v_type"
 
 
 class TypeID:
