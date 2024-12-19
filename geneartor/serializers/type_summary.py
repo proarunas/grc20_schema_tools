@@ -1,5 +1,4 @@
 from collections import namedtuple
-from idlelib.autocomplete import ATTRS
 
 from loguru import logger
 from ruamel.yaml import CommentedSeq, CommentedMap
@@ -11,6 +10,8 @@ from yaml_helpers.yaml_io import parse_relation
 config = namedtuple("Config", ["key_by_id", "include_id", "include_name", "include_desc"])
 
 c = config(key_by_id=False, include_id=True, include_name=True, include_desc=False)
+
+
 # c = config(key_by_id=False, include_id=True, include_name=False, include_desc=False)
 # c = config(key_by_id=True, include_id=False, include_name=True, include_desc=False)
 
@@ -65,7 +66,6 @@ def _serialize_type_simple(entity: dict, definitions: dict, full_data: dict) -> 
 
     result.yaml_set_comment_before_after_key('Attributes', before="\n")
 
-
     if c.key_by_id:
         key = entity.get(PropID.ID)
     else:
@@ -105,6 +105,6 @@ def generate_basic_summary(data: dict) -> dict:
             # serialize the entity
             result.append(_serialize_type_simple(entity, e_def, data))
 
-    add_top_level_spaces(result,1)
+    add_top_level_spaces(result, 1)
 
     return CommentedMap({"Types": result})
