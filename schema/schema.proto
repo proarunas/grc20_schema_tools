@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+message Value {
+  ValueType type = 1;
+  string value = 2;
+  Options options = 3;
+}
+
+message Options {
+  string format = 1;
+  string unit = 2;
+  string language = 3;
+}
+
+message Triple {
+  string entity = 1;
+  string attribute = 2;
+  Value value = 3;
+}
+
+enum ValueType {
+  _UNDEF1 = 0;   // Invalid value, but required by proto3
+  TEXT = 1;
+  NUMBER = 2;
+  CHECKBOX = 3;
+  URL = 4;
+  TIME = 5;
+  POINT = 6;
+}
+
+message Op {
+  OpType type = 1;
+  Triple triple = 2;
+}
+
+enum OpType {
+  _UNDEF2 = 0;   // Invalid value, but required by proto3
+  SET_TRIPLE = 1;
+  DELETE_TRIPLE = 2;
+}
+
+message Edit {
+  string version = 1;
+  ActionType type = 2;
+  string id = 3;
+  string name = 4;
+  repeated Op ops = 5;
+  repeated string authors = 6;
+}
+
+message Import {
+  string version = 1;
+  ActionType type = 2;
+  string previousNetwork = 3;
+  string previousContractAddress = 4;
+  repeated string edits = 5;
+}
+
+enum ActionType {
+  _UNDEF3 = 0;   // Invalid value, but required by proto3
+  ADD_EDIT = 1;
+  ADD_SUBSPACE = 2;
+  REMOVE_SUBSPACE = 3;
+  IMPORT_SPACE = 4;
+  ARCHIVE_SPACE = 5;
+}

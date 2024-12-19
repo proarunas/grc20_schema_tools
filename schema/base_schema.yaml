@@ -1,0 +1,164 @@
+# Disclaimer: This spec file is built based on the:
+# https://github.com/graphprotocol/graph-improvement-proposals/blob/main/grcs/0020-knowledge-graph.md (c: a3b3144),
+# and as of this writing, the structure is not verified.
+
+# Some abstraction is used in this file to cut down on the boilerplate. Most notably, anything that begins with the
+# underscore ('_') is either implicit, or otherwise not part of the spec.
+#
+# Following steps are required to get the result that complies with the spec:
+#
+# 1. All "_expand"s should be expanded/flattened.
+# 2. 'types' need to be assigned to all entities:
+#   - `types: [type]` for every 'type'
+#   - `types: [attr]` for all elements in 'type.<key>.attr'
+#   - `types: [rel]` for all elements in 'type.<key>.rel'
+# 3. `v_type` value should be replaced with a relevant id from the `value_types.yaml` file.
+# 4. Any relation instance (e.g. `rel_limit`) should be removed, and  a corresponding `rel_inst` entity  should be
+#    created instead.
+# 5. _ids should be removed as a parameter and made implicit. (e.g. by replacing the keys with it, as keys are not part
+#   of the spec and are only used for organisation here.).
+#
+# Note, that scripts in this repo only apply the first step on load, and the rest are applied on serialization.
+
+# Later, attr/rel types will be expected to be indexed as `attr:<key>:` and `rel:<key>:` respectively, to facilitate
+# entity reuse, as that is permitted by the spec. But that is not implemented yet.
+
+%YAML 1.2
+---
+
+type:
+  entity:
+    _expand: { name: "Entity", _id: ~ }
+    desc: All entities are of `Entity` type implicitly.
+    attr:
+      - name:
+          _expand: { name: "Name", _id: LuBWqZAu6pz54eiJS5mLv8, v_type: text }
+          desc: The one or many types that this entity has
+      - desc:
+          _expand: { name: "Description", _id: LA1DqP5v6QAdsgLPXGF3YA, v_type: text }
+          desc: A short description that is often shown in previews
+    rel:
+      - types:
+          _expand: { name: "Types", _id: Jfmby78N4BCseZinBmdVov, rel_limit: [ type.type ], one_only: false }
+          desc: The one or many types that this entity has
+      - cover:
+          _expand: { name: "Cover", _id: 7YHk6qYkNDaAtNb8GwmysF, rel_limit: [ type.image ], one_only: true }
+          desc: A banner style image that is wide and conveys the entity
+      - blocks:
+          _expand: { name: "Blocks", _id: QYbjCM6NT9xmh2hFGsqpQX, rel_limit: [ type.block ], one_only: false }
+          desc: The blocks of rich content associated with this entity
+
+  type:
+    _expand: { name: "Type", _id: Jfmby78N4BCseZinBmdVov }
+    desc: Types describe the structure of information.
+    attr: ~
+    rel:
+      - attr:
+          _expand: { name: "Attributes", _id: 9zBADaYzyfzyFJn4GU1cC, rel_limit: [ type.attr ], one_only: false }
+          desc: ~
+      - rel:
+          _expand: { name: "Relation Types", _id: TarUQath6Kyh3jfnRv3hy7, rel_limit: [ type.rel ], one_only: false }
+          desc: ~
+
+  attr:
+    _expand: { name: "Attribute", _id: GscJ2GELQjmLoaVrYyR3xm }
+    desc: An attribute describes a property of an entity.
+    attr:
+      - v_type:
+          _expand: { name: "Value Type", _id: WQfdWjboZWFuTseDhG5Cw1, v_type: text }
+          desc: The type ID a triple for this attribute should have. There are entities for the native types
+    rel: ~
+
+  rel:
+    _expand: { name: "Relation Type", _id: 3WxYoAVreE4qFhkDUs5J3q }
+    desc: >-
+      A Relation Type is a definition of a relation similar to an attribute but specifically for one to one, one to
+      many, and many to many relations.
+    attr:
+      - one_max:
+          _expand: { name: "One Max", _id: K1M9AEyda5oNB2WS38bDDW, v_type: text }
+          desc: Whether to limit the number of relations from a given entity to no more than 1
+    rel:
+      - rel_limit:
+          _expand: { name: "Relation value types", _id: SeDR2b1bdnb6tj2qmdcFdg, rel_limit: [ type.type ], one_only: false }
+          desc: A list of types that the relation To entity may have. Used as a hint
+
+
+  rel_inst:
+    _expand: { name: "Relation", _id: QtC4Ay8HNLwSd1kSARgcDE }
+    desc: >-
+      Relations describe the edges of a graph. Relations are themselves entities that include details about the
+      relationship.
+    attr:
+      - rel_from:
+          _expand: { name: "From entity", _id: RERshk4JoYoMC17r1qAo9J, v_type: text }
+          desc: The entity ID this relation is from
+      - rel_to:
+          _expand: { name: "To entity", _id: Qx8dASiTNsxxP3rJbd4Lzd, v_type: text }
+          desc: The entity ID this relation is pointing to
+      - rel_order:
+          _expand: { name: "Index", _id: WNopXUYxsSsE51gkJGWghe, v_type: text }
+          desc: An alphanumeric fractional index describing the relative position of this item
+    rel: ~
+
+
+  image:
+    _expand: { name: "Image", _id: Q1LaZhnzj8AtCzx8T1HRMf }
+    attr:
+      - width:
+          _expand: { name: "Width", _id: ~, v_type: time }
+          desc: ""
+      - height:
+          _expand: { name: "Height", _id: ~, v_type: time }
+          desc: ""
+    rel: ~
+
+
+  block:
+    _expand: { name: "Block", _id: ~ }
+    desc: >-
+      Every entity can have blocks comprising the content for a page. Apps can choose to support different block types.
+      The standard set of block types will be published in the Content spec.
+    attr: ~
+    rel: ~
+
+
+  space:
+    _expand: { name: "Space", _id: 7gzF671tq5JTZ13naG4tnr }
+    desc: ~
+    attr: ~
+    rel:
+      - broader_spaces:
+          _expand: { name: "Broader Spaces", _id: ~, rel_limit: [ type.space ], one_only: false }
+          desc: The spaces that this is a subspace of
+      - subspaces:
+          _expand: { name: "Subspaces", _id: ~, rel_limit: [ type.space ], one_only: false }
+          desc: Spaces that are more granular for drilling down
+
+
+  _sys_prop:
+    _expand: { name: "System Properties", _id: ~, _ignore: true }
+    desc: Not an actual Type. A collection of properties that the indexer can provide about any entity.
+    attr:
+      - created_at:
+          _expand: { name: "Created At", _id: ~, v_type: time }
+          desc: The time this entity was first seen by the indexer
+      - updated_at:
+          _expand: { name: "Updated At", _id: ~, v_type: time }
+          desc: The most recent time this entity was updated by the indexer
+      - created_by:
+          _expand: { name: "Created By", _id: ~, v_type: time }
+          desc: The blockchain address of the account that signed the transaction to create this entity
+    rel:
+      - versions:
+          _expand: { name: "Versions", _id: ~, rel_limit: [ type.space ], one_only: false }
+          desc: A reference to previous versions of this entity
+
+
+  version:
+    _expand: { name: "Version", _id: ~ }
+    desc: ~
+    attr: ~
+    rel: ~
+
+...

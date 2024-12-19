@@ -1,0 +1,70 @@
+# Disclaimer: This spec file is built based on the
+# https://github.com/graphprotocol/graph-improvement-proposals/blob/main/grcs/0020-knowledge-graph.md (c: a3b3144)
+# and as of this writing, the structure is not verified.
+
+# note: value types aren't real types, and are embedded directly into the pseudo-triples.
+# id is the only relevant part here for the schema validation, but the rest is useful for validating the values.
+
+%YAML 1.2
+---
+
+v_type:
+  text:
+    _expand: { name: "Text", id: LckSTmjBrYAJaFcDs89am5, value: 1 }
+    desc: >
+      An arbitrary length string of characters. Text may include newline characters or markdown. Clients may choose
+      which attributes to support markdown for. Example: \"Radiohead\"
+    options.language.desc: >
+      A language option can be provided to specify a language for the text. The language must be an entity ID for a
+      Language entity. If no language is specified and the text is linguistic, it is assumed to be in US English."
+
+  number:
+    _expand: { name: "Number", id: LBdMpTNyycNffsF51t2eSp, value: 2 }
+    desc: >
+      Numbers are encoded as strings. One decimal point may be used. An optional negative sign (-) can be included at
+      the beginning for negative values. No other symbols such as commas may be used. Additional metadata for units and
+      formatting can be included as options.
+    options:
+      format.desc: >
+        The format option uses the ICU decimal format. For example: `¤#,##0.00` would render a value like `$1,234.56.`
+      unit.desc: >
+        The unit option can be included to define a specific currency or other unit to use. The value must be the entity
+        ID of a Currency or Unit entity.
+
+  bool:
+    _expand: { name: "Checkbox", id: G9NpD4c7GB7nH5YU9Tesgf, value: 3 }
+    desc: >
+      A checkbox can either be true or false. It's a boolean field named for normal people. The string encoding of the
+      checkbox field must be \"1\" for true and \"0\" for false. Checkbox values can be rendered with alternate UI
+      components such as switches and toggles.
+    options: ~
+
+  url:
+    _expand: { name: "URL", id: 5xroh3gbWYbWY4oR3nFXzy, value: 4 }
+    desc: >
+      A URL value type is technically a URI that starts with the protocol identifier followed by a :// and the resource.
+      The initial supported protocols are: graph, ipfs, ar, https."
+    options: ~
+
+  time:
+    _expand: { name: "Time", id: 3mswMrL91GuYTfBq29EuNE, value: 5 }
+    desc: >
+      Time is represented as an ISO-8601 format string. A time value can be used to describe both date and time as well
+      as durations. Clients should include timezones when creating times. In rare exceptions, if the timezone is
+      omitted, the time is interpreted as being in the consumer's local time. Example: 2024-11-03T11:15:45.000Z"
+    options.format.desc: >
+      A format string using the Unicode Technical Standard #35.
+
+  point:
+    _expand: { name: "Point", id: UZBZNbA7Uhx1f8ebLi1Qj5, value: 6 }
+    desc: >
+      A point is a location specified with x and y coordinates string encoded. Points can be used for geo locations or
+      other cartesian coordinate systems. Clients may choose how many dimensions to support. 
+      Example: \"12.554564, 11.323474\"
+      
+      The value must have valid decimal numbers separated by a comma. A space after the comma is optional. For geo
+      locations, the latitude and longitude must be provided with latitude first. Positive/negative signs indicate
+      north/south for latitude and east/west for longitude respectively."
+    options: ~
+
+...
