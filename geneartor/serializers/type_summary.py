@@ -1,3 +1,6 @@
+from collections import namedtuple
+from idlelib.autocomplete import ATTRS
+
 from loguru import logger
 from ruamel.yaml import CommentedSeq, CommentedMap
 
@@ -5,11 +8,21 @@ from yaml_helpers.attributes_helper import PropID, TypeID
 from yaml_helpers.yaml_format_helpers import add_top_level_spaces
 from yaml_helpers.yaml_io import parse_relation
 
+config = namedtuple("Config", ["key_by_id", "include_id", "include_name", "include_desc"])
+
+c = config(key_by_id=False, include_id=True, include_name=True, include_desc=False)
+# c = config(key_by_id=False, include_id=True, include_name=False, include_desc=False)
+# c = config(key_by_id=True, include_id=False, include_name=True, include_desc=False)
+
 
 def _serialize_type_simple(entity: dict, definitions: dict, full_data: dict) -> dict:
-    ignored_attrs = [PropID.ID, PropID.DESC] # , PropID.NAME]
+    ignored_attrs = []
+    if not c.include_name:
+        ignored_attrs.append(PropID.NAME)
+    if not c.include_desc:
+        ignored_attrs.append(PropID.DESC)
 
-    #logger.debug("Serializing: {},\t types: {}",
+    # logger.debug("Serializing: {},\t types: {}",
     #             entity.get(PropID.NAME), ','.join({t.get(PropID.NAME) for t in definitions.values()}))
 
     attrs, rels = {}, {}
@@ -23,7 +36,8 @@ def _serialize_type_simple(entity: dict, definitions: dict, full_data: dict) -> 
             rels[key] = rel
 
     result = CommentedMap()
-    result["_ID"] = entity.get(PropID.ID)
+    if c.include_id:
+        result["_ID"] = entity.get(PropID.ID)
     result["Types"] = CommentedSeq([t.get(PropID.NAME) for k, t in definitions.items() if k != TypeID.ENTITY])
     result["Types"].fa.set_flow_style()
 
@@ -44,8 +58,20 @@ def _serialize_type_simple(entity: dict, definitions: dict, full_data: dict) -> 
             r_vals = CommentedSeq(r_vals)
             r_vals.fa.set_flow_style()
             result[rel[PropID.NAME]] = r_vals
+        else:
+            # Make sure that attributes and relations are always present
+            if key in [PropID.ATTR, PropID.REL]:
+                result[rel[PropID.NAME]] = []
 
-    return result
+    result.yaml_set_comment_before_after_key('Attributes', before="\n")
+
+
+    if c.key_by_id:
+        key = entity.get(PropID.ID)
+    else:
+        key = entity.get(PropID.NAME)
+
+    return {key: result}
 
 
 def generate_basic_summary(data: dict) -> dict:
@@ -58,7 +84,7 @@ def generate_basic_summary(data: dict) -> dict:
     logger.debug("Serializing. Got types: {}", len(types))
 
     # iterate over all base types
-    undef_counter, result = 0, CommentedMap()
+    undef_counter, result = 0, CommentedSeq()
     for e_type, entities in data.items():
 
         # get the definition for the base type
@@ -77,12 +103,8 @@ def generate_basic_summary(data: dict) -> dict:
             e_def = {**base_def, **{t: types.get(t) for t in (entity.get(PropID.TYPES, []))}}
 
             # serialize the entity
-            serialized = _serialize_type_simple(entity, e_def, data)
+            result.append(_serialize_type_simple(entity, e_def, data))
 
-            e_id = entity.get(PropID.NAME)
+    add_top_level_spaces(result,1)
 
-            result[e_id] = serialized
-
-    add_top_level_spaces(result)
-
-    return result
+    return CommentedMap({"Types": result})

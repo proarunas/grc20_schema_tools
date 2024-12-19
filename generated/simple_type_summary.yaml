@@ -1,0 +1,76 @@
+%YAML 1.2
+---
+Types:
+
+  - Entity:
+      _ID: ~
+      Types: [Type]
+      Name: Entity
+
+      Attributes: [Name, Description]
+      Relation Types: [Types, Cover, Blocks]
+
+  - Type:
+      _ID: Jfmby78N4BCseZinBmdVov
+      Types: [Type]
+      Name: Type
+
+      Attributes: []
+      Relation Types: [Attributes, Relation Types]
+
+  - Attribute:
+      _ID: GscJ2GELQjmLoaVrYyR3xm
+      Types: [Type]
+      Name: Attribute
+
+      Attributes: [Value Type]
+      Relation Types: []
+
+  - Relation Type:
+      _ID: 3WxYoAVreE4qFhkDUs5J3q
+      Types: [Type]
+      Name: Relation Type
+
+      Attributes: [One Max]
+      Relation Types: [Relation value types]
+
+  - Relation:
+      _ID: QtC4Ay8HNLwSd1kSARgcDE
+      Types: [Type]
+      Name: Relation
+
+      Attributes: [From entity, To entity, Index]
+      Relation Types: []
+
+  - Image:
+      _ID: Q1LaZhnzj8AtCzx8T1HRMf
+      Types: [Type]
+      Name: Image
+
+      Attributes: [Width, Height]
+      Relation Types: []
+
+  - Block:
+      _ID: ~
+      Types: [Type]
+      Name: Block
+
+      Attributes: []
+      Relation Types: []
+
+  - Space:
+      _ID: 7gzF671tq5JTZ13naG4tnr
+      Types: [Type]
+      Name: Space
+
+      Attributes: []
+      Relation Types: [Broader Spaces, Subspaces]
+
+  - Version:
+      _ID: ~
+      Types: [Type]
+      Name: Version
+
+      Attributes: []
+      Relation Types: []
+...

@@ -17,8 +17,8 @@ def generate_id_dict(data: dict) -> CommentedMap:
     # set up the id dictionaries
     id_list = CommentedSeq()
     result.append({type_name: id_list})
-    attr_list = CommentedSeq()
-    result.append({attr_name: attr_list})
+    attr_dict = CommentedSeq()
+    result.append({attr_name: attr_dict})
     rel_list = CommentedSeq()
     result.append({rel_name: rel_list})
 
@@ -50,7 +50,7 @@ def generate_id_dict(data: dict) -> CommentedMap:
             # handle attributes
             for item in entity.get(PropID.ATTR) or []:
                 key, rel = parse_relation(item, data)
-                attr_list.append({rel.get(PropID.NAME): rel.get(PropID.ID)})
+                attr_dict.append({rel.get(PropID.NAME): rel.get(PropID.ID)})
 
             # handle relations
             for item in entity.get(PropID.REL) or []:
