@@ -17,10 +17,10 @@ main_schema_path = os.path.join(schema_dir, "base_schema.yaml")
 value_types_path = os.path.join(schema_dir, "value_types.yaml")
 
 output_dir = "../generated/"
-summary_file_path = os.path.join(output_dir, "simple_type_summary.yaml")
-attribute_summary_path = os.path.join(output_dir, "simple_attribute_summary.yaml")
+summary_file_path = os.path.join(output_dir, "type_summary.yaml")
+attribute_summary_path = os.path.join(output_dir, "attribute_summary.yaml")
 rel_summary_path = os.path.join(output_dir, "relation_summary.yaml")
-id_dict_file_path = os.path.join(output_dir, "simple_id_dict.yaml")
+id_dict_file_path = os.path.join(output_dir, "id_dict.yaml")
 
 debug = False
 
